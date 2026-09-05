@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex justify-center min-h-[80vh] px-4 py-12 relative z-10">
+    <div class="glass-panel w-full max-w-2xl p-8 rounded-2xl">
+        <h2 class="text-2xl md:text-3xl font-bold gradient-text mb-6">Step 1: Confirm Details</h2>
+        
+        <div class="bg-darkBg/50 p-6 rounded-xl mb-8 border border-gray-700">
+            <h3 class="text-xl font-bold text-white mb-4">Selected Package: <span class="text-primary">{{ package.name }}</span></h3>
+            <div class="grid grid-cols-2 gap-4 text-gray-300">
+                <div>Speed: <strong class="text-white">{{ package.speed_mbps }} Mbps</strong></div>
+                <div>Price: <strong class="text-white">Rs. {{ package.price }}</strong></div>
+            </div>
+        </div>
+
+        <form method="POST" action="{% url 'purchase' package.id %}" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-2">Preferred Start Date</label>
+                <input type="date" name="start_date" id="start_date" value="{{ today }}" min="{{ today }}" required class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-darkBg/50 text-white focus:outline-none focus:ring-2 focus:ring-primary transition" onchange="updateExpiry()">
+                <p class="text-sm text-gray-400 mt-2">Your package will expire around <strong class="text-red-400" id="expiry_estimate">{{ expiry_estimate }}</strong> (8th of next calendar month).</p>
+            </div>
+            
+            <div class="flex justify-between items-center pt-6">
+                <a href="{% url 'packages' %}" class="text-gray-400 hover:text-white transition">Cancel</a>
+                <button type="submit" class="bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 px-8 rounded-lg btn-glow">
+                    Continue to Payment <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function updateExpiry() {
+        const start = document.getElementById('start_date').value;
+        if (!start) return;
+        const d = new Date(start);
+        // Next month's 8th day calculation for display purposes
+        let nextMonth = d.getMonth() + 1;
+        let year = d.getFullYear();
+        if (nextMonth > 11) {
+            nextMonth = 0;
+            year++;
+        }
+        const expiryDate = new Date(year, nextMonth, 8);
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('expiry_estimate').innerText = expiryDate.toLocaleDateString('en-US', options);
+    }
+</script>
+{% endblock %}

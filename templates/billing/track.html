@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12 relative z-10">
+    <div class="mb-8">
+        <h2 class="text-2xl md:text-3xl font-bold gradient-text">Payment History</h2>
+        <p class="text-gray-400">Track all your past purchases and download receipts.</p>
+    </div>
+
+    <div class="glass-panel rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-800/50 text-gray-300 text-sm uppercase">
+                        <th class="px-6 py-4">Date</th>
+                        <th class="px-6 py-4">Package</th>
+                        <th class="px-6 py-4">Amount</th>
+                        <th class="px-6 py-4">TRX ID</th>
+                        <th class="px-6 py-4">Status</th>
+                        <th class="px-6 py-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-700">
+                    {% for payment in payments %}
+                    <tr class="hover:bg-white/5 transition">
+                        <td class="px-6 py-4 whitespace-nowrap">{{ payment.created_at|date:"M d, Y" }}</td>
+                        <td class="px-6 py-4 font-bold">{{ payment.subscription.package.name }}</td>
+                        <td class="px-6 py-4 text-primary font-bold">Rs. {{ payment.amount }}</td>
+                        <td class="px-6 py-4 font-mono text-sm text-gray-400">{{ payment.transaction_id }}</td>
+                        <td class="px-6 py-4">
+                            {% if payment.status == 'Verified' %}
+                                <span class="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-bold border border-green-500">Verified</span>
+                            {% elif payment.status == 'Rejected' %}
+                                <span class="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-xs font-bold border border-red-500">Rejected</span>
+                            {% else %}
+                                <span class="bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-bold border border-yellow-500">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4">
+                            {% if payment.status == 'Verified' %}
+                            <a href="{% url 'download_receipt' payment.id %}" class="text-primary hover:text-white transition flex items-center gap-2">
+                                <i class="fas fa-file-pdf"></i> Receipt
+                            </a>
+                            {% else %}
+                            <span class="text-gray-500">-</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-10 text-center text-gray-400">No payment history found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

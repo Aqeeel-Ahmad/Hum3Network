@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-16 relative z-10">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Choose Your Internet Package</h2>
+        <p class="text-xl text-gray-400">Blazing fast fiber optic internet designed for your needs.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for pkg in packages %}
+        <div class="glass-panel p-8 rounded-2xl flex flex-col items-center text-center transform hover:-translate-y-2 transition duration-300 relative overflow-hidden group">
+            <!-- Glow Effect -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/40 transition"></div>
+            
+            <h3 class="text-2xl font-bold mb-2">{{ pkg.name }}</h3>
+            <div class="my-6">
+                <span class="text-4xl md:text-5xl font-extrabold text-white">{{ pkg.speed_mbps }}</span>
+                <span class="text-xl text-gray-400">Mbps</span>
+            </div>
+            <div class="text-2xl font-bold text-primary mb-8">
+                Rs. {{ pkg.price }} <span class="text-sm text-gray-400">/ month</span>
+            </div>
+            
+
+
+            <a href="{% url 'purchase' pkg.id %}" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 rounded-lg btn-glow mt-auto text-center">
+                Select Plan
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-span-3 text-center text-gray-400 py-10">
+            No packages available at the moment. Please check back later.
+        </div>
+        {% endfor %}
+
+        <!-- Custom Package Card -->
+        <div class="glass-panel p-8 rounded-2xl flex flex-col items-center text-center transform hover:-translate-y-2 transition duration-300 relative overflow-hidden group border-2 border-primary"
+             x-data="{ speed: 10, baseFee: 500, ratePerMb: 100, get price() { return this.baseFee + (this.speed * this.ratePerMb); } }">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/40 transition"></div>
+            <h3 class="text-2xl font-bold mb-2">Customize Package</h3>
+            
+            <form action="{% url 'purchase_custom' %}" method="POST" class="w-full flex flex-col flex-grow">
+                {% csrf_token %}
+                <div class="my-4 w-full">
+                    <label class="block text-sm text-gray-400 mb-2">Select Speed (Mbps)</label>
+                    <select name="speed" x-model.number="speed" class="w-full bg-darkBg border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary text-center font-bold text-xl cursor-pointer">
+                        <option value="2">2 Mbps</option>
+                        <option value="4">4 Mbps</option>
+                        <option value="5">5 Mbps</option>
+                        <option value="8">8 Mbps</option>
+                        <option value="10">10 Mbps</option>
+                        <option value="15">15 Mbps</option>
+                        <option value="20">20 Mbps</option>
+                        <option value="25">25 Mbps</option>
+                        <option value="30">30 Mbps</option>
+                        <option value="40">40 Mbps</option>
+                        <option value="50">50 Mbps</option>
+                    </select>
+                </div>
+                
+                <div class="text-2xl font-bold text-primary mb-6">
+                    Rs. <span x-text="price"></span> <span class="text-sm text-gray-400">/ month</span>
+                </div>
+                
+                <input type="hidden" name="price" :value="price">
+                
+
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-3 rounded-lg btn-glow mt-auto">
+                    Select Custom Plan
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

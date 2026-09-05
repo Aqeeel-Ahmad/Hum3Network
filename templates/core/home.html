@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="relative w-full overflow-hidden">
+    <!-- Hero Section -->
+    <div class="relative z-10 flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
+        <h1 class="text-2xl md:text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 animate-pulse-slow">
+            <span class="gradient-text">Fast, Reliable & Unlimited</span><br>
+            Internet with Hum 3 Network
+        </h1>
+        <p class="text-lg sm:text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl">
+            Experience the future of connectivity with our state-of-the-art fiber optic network.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4 sm:px-0">
+            <a href="{% url 'packages' %}" class="bg-gradient-to-r from-primary to-secondary text-white px-8 py-3 rounded-full font-bold text-lg btn-glow shadow-lg shadow-primary/30">
+                View Packages
+            </a>
+            <a href="{% url 'account_signup' %}" class="glass-panel text-white px-8 py-3 rounded-full font-bold text-lg hover:bg-white/10 transition">
+                Get Started
+            </a>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <div class="max-w-7xl mx-auto px-4 py-20 relative z-10">
+        <h2 class="text-2xl md:text-3xl md:text-4xl font-bold text-center mb-16 gradient-text">Why Choose Hum 3 Network?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="glass-panel p-8 rounded-2xl text-center transform hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-tachometer-alt text-4xl md:text-5xl text-primary mb-6"></i>
+                <h3 class="text-lg md:text-xl font-bold mb-3">High-Speed Fiber</h3>
+                <p class="text-gray-400">Blazing fast internet speeds that never slow you down.</p>
+            </div>
+            <div class="glass-panel p-8 rounded-2xl text-center transform hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-wifi text-4xl md:text-5xl text-secondary mb-6"></i>
+                <h3 class="text-lg md:text-xl font-bold mb-3">Reliable Connection</h3>
+                <p class="text-gray-400">99.9% uptime guaranteed for all your streaming and gaming needs.</p>
+            </div>
+            <div class="glass-panel p-8 rounded-2xl text-center transform hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-tags text-4xl md:text-5xl text-primary mb-6"></i>
+                <h3 class="text-lg md:text-xl font-bold mb-3">Affordable Packages</h3>
+                <p class="text-gray-400">Flexible plans designed to fit your budget perfectly.</p>
+            </div>
+            <div class="glass-panel p-8 rounded-2xl text-center transform hover:-translate-y-2 transition duration-300">
+                <i class="fas fa-headset text-4xl md:text-5xl text-secondary mb-6"></i>
+                <h3 class="text-lg md:text-xl font-bold mb-3">24/7 Support</h3>
+                <p class="text-gray-400">Our customer support team is always here to help you.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback & Complaint Section -->
+    <div class="max-w-7xl mx-auto px-4 py-20 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Feedback Form -->
+        <div class="glass-panel p-8 rounded-2xl">
+            <h3 class="text-xl md:text-2xl font-bold mb-6 text-primary"><i class="fas fa-comment-dots"></i> Leave Feedback</h3>
+            <form action="{% url 'submit_feedback' %}" method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="name" placeholder="Your Name" required class="w-full bg-darkBg/50 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <input type="email" name="email" placeholder="Your Email" required class="w-full bg-darkBg/50 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary">
+                </div>
+                <div>
+                    <select name="rating" required class="w-full bg-darkBg/50 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary">
+                        <option value="">Select Rating (1-5)</option>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="3">3 - Good</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="1">1 - Poor</option>
+                    </select>
+                </div>
+                <div>
+                    <textarea name="message" placeholder="Your Message" rows="4" required class="w-full bg-darkBg/50 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-2 rounded-lg btn-glow">Submit Feedback</button>
+            </form>
+        </div>
+
+        <!-- Complaint Form -->
+        <div class="glass-panel p-8 rounded-2xl">
+            <h3 class="text-xl md:text-2xl font-bold mb-6 text-red-400"><i class="fas fa-exclamation-triangle"></i> Submit Complaint</h3>
+            <form action="{% url 'submit_complaint' %}" method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <input type="text" name="subject" placeholder="Subject" required class="w-full bg-darkBg/50 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-red-400">
+                </div>
+                <div>
+                    <textarea name="description" placeholder="Detailed Description of the Issue" rows="6" required class="w-full bg-darkBg/50 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-red-400"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-red-500/80 hover:bg-red-500 text-white font-bold py-2 rounded-lg transition">Submit Complaint</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

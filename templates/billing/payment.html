@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex justify-center min-h-[80vh] px-4 py-12 relative z-10">
+    <div class="glass-panel w-full max-w-2xl p-8 rounded-2xl">
+        <h2 class="text-2xl md:text-3xl font-bold gradient-text mb-6">Step 2: Make Payment</h2>
+        
+        {% if outstanding > 0 %}
+        <div class="bg-darkBg p-6 rounded-xl border border-gray-700 mb-6">
+            <h3 class="text-xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Payment Breakdown</h3>
+            <div class="flex justify-between items-center text-gray-300 mb-2">
+                <span>Current Package ({{ sub.package.name }})</span>
+                <span>Rs. {{ sub.package.price }}</span>
+            </div>
+            <div class="flex justify-between items-center text-red-400 mb-4 pb-4 border-b border-gray-700">
+                <span>Previous Outstanding Payment</span>
+                <span>Rs. {{ outstanding }}</span>
+            </div>
+            <div class="flex justify-between items-center text-xl font-bold text-white">
+                <span>Total Amount Due</span>
+                <span class="text-primary">Rs. {{ total_amount }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="bg-primary/20 border border-primary p-6 rounded-xl mb-8 flex items-start gap-4">
+            <div class="text-2xl md:text-3xl text-primary mt-1"><i class="fas fa-mobile-alt"></i></div>
+            <div>
+                <h3 class="text-xl font-bold text-white mb-2">EasyPaisa Instructions</h3>
+                <p class="text-gray-300 mb-2">Please send the exact amount of <strong class="text-white">Rs. {{ total_amount }}</strong> to the following EasyPaisa account:</p>
+                <div class="bg-darkBg rounded p-3 text-center mb-2">
+                    <span class="text-2xl font-bold text-white tracking-wider">0345 2524086</span>
+                </div>
+                <p class="text-sm text-gray-400">After sending, enter the Transaction ID (TRX ID) below to submit your payment for verification.</p>
+            </div>
+        </div>
+
+        <div x-data="{ showModal: false, trxId: '' }">
+            <form x-ref="paymentForm" @submit.prevent="showModal = true" method="POST" action="{% url 'payment' sub.id %}" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Transaction ID (TRX ID) (Optional)</label>
+                    <input type="text" name="transaction_id" x-model="trxId" placeholder="e.g. 12345678901" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-darkBg/50 text-white focus:outline-none focus:ring-2 focus:ring-primary transition">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Upload Screenshot (Optional)</label>
+                    <input type="file" name="receipt_image" accept="image/*" class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-darkBg/50 text-white focus:outline-none focus:ring-2 focus:ring-primary transition file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-secondary">
+                </div>
+                
+                <div class="pt-6">
+                    <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary text-white font-bold py-4 rounded-lg btn-glow shadow-lg shadow-primary/30">
+                        Confirm Payment
+                    </button>
+                </div>
+            </form>
+
+            <!-- Modal Popup -->
+            <div x-show="showModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4" x-transition.opacity>
+                <div class="glass-panel p-8 rounded-2xl max-w-md w-full relative" x-transition>
+                    <h3 class="text-2xl font-bold mb-4 text-white">Send Payment Proof</h3>
+                    <p class="text-gray-300 mb-6">
+                        You must send your payment proof to our WhatsApp to complete the payment submission.
+                    </p>
+                    <div class="flex flex-col gap-4">
+                        <button type="button" @click="
+                            let msg = 'Hello, I have submitted a payment for Hum 3 Network.\nUsername: {{ user.username }}\nPackage: {{ sub.package.name }}\nAmount: Rs. {{ total_amount }}\nTRX ID: ' + (trxId || 'N/A');
+                            window.open('https://wa.me/923452524086?text=' + encodeURIComponent(msg), '_blank');
+                            $refs.paymentForm.submit();
+                        " class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2 transition">
+                            <i class="fab fa-whatsapp text-xl"></i> Send Proof to WhatsApp
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

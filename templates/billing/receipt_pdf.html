@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt #{{ payment.id }}</title>
+    <style>
+        body { font-family: Helvetica, sans-serif; color: #333; line-height: 1.6; }
+        .container { padding: 40px; }
+        .header { border-bottom: 2px solid #0ea5e9; padding-bottom: 20px; margin-bottom: 30px; }
+        .logo { font-size: 24px; font-weight: bold; color: #0ea5e9; }
+        .title { font-size: 20px; text-transform: uppercase; letter-spacing: 2px; color: #666; float: right; }
+        .details-table { width: 100%; margin-bottom: 30px; border-collapse: collapse; }
+        .details-table th, .details-table td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        .details-table th { color: #666; font-weight: normal; }
+        .total-row { font-weight: bold; font-size: 18px; }
+        .footer { text-align: center; color: #888; font-size: 12px; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="logo">HUM 3 NETWORK</span>
+            <span class="title">Payment Receipt</span>
+        </div>
+        
+        <p><strong>Date:</strong> {{ payment.created_at|date:"M d, Y" }}</p>
+        <p><strong>Customer:</strong> {{ payment.subscription.user.username }} ({{ payment.subscription.user.email }})</p>
+        <p><strong>Transaction ID:</strong> {{ payment.transaction_id }}</p>
+        <p><strong>Status:</strong> {{ payment.status }}</p>
+
+        <table class="details-table">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Dates</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ payment.subscription.package.name }} ({{ payment.subscription.package.speed_mbps }} Mbps)</td>
+                    <td>{{ payment.subscription.start_date|date:"M d, Y" }} - {{ payment.subscription.expiry_date|date:"M d, Y" }}</td>
+                    <td>Rs. {{ payment.subscription.package.price }}</td>
+                </tr>
+                {% if payment.outstanding_balance_paid > 0 %}
+                <tr>
+                    <td>Previous Outstanding Payment</td>
+                    <td>-</td>
+                    <td>Rs. {{ payment.outstanding_balance_paid }}</td>
+                </tr>
+                {% endif %}
+                <tr class="total-row">
+                    <td colspan="2" style="text-align: right;">Total Paid:</td>
+                    <td>Rs. {{ payment.amount }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="footer">
+            Thank you for choosing Hum 3 Network!<br>
+            If you have any questions about this receipt, please contact support.
+        </div>
+    </div>
+</body>
+</html>

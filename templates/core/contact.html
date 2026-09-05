@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-16 relative z-10">
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">Contact Us</h2>
+        <p class="text-xl text-gray-400">We're here to help you with any questions or concerns.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="glass-panel p-8 rounded-2xl">
+            <h3 class="text-2xl font-bold text-primary mb-6"><i class="fas fa-map-marker-alt"></i> Our Headquarters</h3>
+            
+            <ul class="space-y-6 text-gray-300">
+                <li class="flex items-start gap-4">
+                    <div class="bg-primary/20 p-3 rounded-full text-primary mt-1">
+                        <i class="fas fa-location-arrow"></i>
+                    </div>
+                    <div>
+                        <strong class="block text-white mb-1">Address</strong>
+                        123 Fiber Optic Way, Tech District, City 45678
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <div class="bg-secondary/20 p-3 rounded-full text-secondary mt-1">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div>
+                        <strong class="block text-white mb-1">Phone</strong>
+                        +1 (800) 123-4567
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <div class="bg-green-500/20 p-3 rounded-full text-green-400 mt-1">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div>
+                        <strong class="block text-white mb-1">WhatsApp</strong>
+                        <a href="https://wa.me/18001234567" class="text-green-400 hover:underline">+1 (800) 123-4567</a>
+                    </div>
+                </li>
+                <li class="flex items-start gap-4">
+                    <div class="bg-primary/20 p-3 rounded-full text-primary mt-1">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <strong class="block text-white mb-1">Email</strong>
+                        support@hum3network.com
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="glass-panel p-2 rounded-2xl overflow-hidden h-[400px]">
+            <!-- Google Maps Placeholder -->
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115681.29592731265!2d-77.4771327!3d25.0326996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x892f7c99b981dbc9%3A0x2aef01d3485e50d2!2sNassau%2C%20The%20Bahamas!5e0!3m2!1sen!2sus!4v1689264426543!5m2!1sen!2sus" 
+                width="100%" 
+                height="100%" 
+                style="border:0; filter: invert(90%) hue-rotate(180deg);" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+</div>
+{% endblock %}
