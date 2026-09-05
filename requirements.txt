@@ -26,3 +26,5 @@ weasyprint==69.0
 webencodings==0.6.1
 whitenoise==6.12.0
 zopfli==0.4.3
+cloudinary==1.41.0
+django-cloudinary-storage==0.3.0
