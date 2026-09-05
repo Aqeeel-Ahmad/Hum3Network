@@ -97,14 +97,16 @@ DATABASES = {
 }
 
 if os.environ.get('POSTGRES_URL'):
+    url = os.environ.get('POSTGRES_URL').replace('&supa=base-pooler.x', '')
     DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('POSTGRES_URL'),
+        default=url,
         conn_max_age=600,
         conn_health_checks=True,
     )
 elif os.environ.get('DATABASE_URL'):
+    url = os.environ.get('DATABASE_URL').replace('&supa=base-pooler.x', '')
     DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
+        default=url,
         conn_max_age=600,
         conn_health_checks=True,
     )
