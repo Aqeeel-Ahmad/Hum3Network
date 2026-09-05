@@ -182,4 +182,11 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'accounts.forms.CustomSignupForm'
 
 # Cloudinary Storage for Media uploads
 if os.environ.get('CLOUDINARY_URL'):
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
